@@ -110,13 +110,12 @@ def run_seed(self, mode=MODE_SEED):
   :param mode: refresh / clear / seed (default)
   :return:
   """
-  print(mode)
   # Clear data from tables
   if mode == MODE_CLEAR or mode == MODE_REFRESH:
       clear_data()
   
   if mode == MODE_REFRESH or mode == MODE_SEED:
-    # create_armors()
-    # create_weapons()
-    # create_spells()
+    create_armors()
+    create_weapons()
+    create_spells()
     create_items()

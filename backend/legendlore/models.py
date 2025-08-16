@@ -22,7 +22,9 @@ class Armor(models.Model):
   )
   
   def __str__(self):
-    suffix = " Armor" if self.category!='SHL' else ""
+    suffix = ""
+    if self.category!='SHL' and self.name!='Breastplate' and 'Chain' not in self.name and 'Mail' not in self.name:
+      suffix = " Armor" 
     return f"{self.name}{suffix}"
   def __repr__(self):
     return f"{self.name}"
