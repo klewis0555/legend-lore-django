@@ -2,15 +2,11 @@ from rest_framework import serializers
 from .models import Armor, Weapon, Spell, Item
 
 class ArmorSerializer(serializers.ModelSerializer):
-  category = serializers.CharField(source='get_category_display')
   class Meta:
     model = Armor
     fields = ('id', 'name', 'price', 'category')
 
 class WeaponSerializer(serializers.ModelSerializer):
-  damage_type = serializers.CharField(source='get_damage_type_display')
-  weapon_class = serializers.CharField(source='get_weapon_class_display')
-  mastery = serializers.CharField(source='get_mastery_display')
   class Meta:
     model = Weapon
     fields = (
@@ -34,14 +30,11 @@ class WeaponSerializer(serializers.ModelSerializer):
     )
 
 class SpellSerializer(serializers.ModelSerializer):
-  school = serializers.CharField(source='get_school_display')
   class Meta:
     model = Spell
     fields = ('id', 'name', 'level', 'school')
 
 class ItemSerializer(serializers.ModelSerializer):
-  rarity = serializers.CharField(source='get_rarity_display')
-  category = serializers.CharField(source='get_category_display')
   armor_options = serializers.SlugRelatedField(
     many=True,
     slug_field='name',
