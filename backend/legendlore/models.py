@@ -178,6 +178,7 @@ class Spell(models.Model):
 class Item(models.Model):
   # Choice Definitions
   class ItemRarity(models.TextChoices):
+    MUNDANE =   "M", _("Mundane")
     COMMON =    "C", _("Common")
     UNCOMMON =  "U", _("Uncommon")
     RARE =      "R", _("Rare")

@@ -29,31 +29,14 @@ class Command(BaseCommand):
 
 def clear_data():
   """Deletes all the table data"""
-  # print("Delete Armor instances")
-  # Armor.objects.all().delete()
-  # print("Delete Weapon instances")
-  # Weapon.objects.all().delete()
-  # print("Delete Spell instances")
-  # Spell.objects.all().delete()
+  print("Delete Armor instances")
+  Armor.objects.all().delete()
+  print("Delete Weapon instances")
+  Weapon.objects.all().delete()
+  print("Delete Spell instances")
+  Spell.objects.all().delete()
   print("Delete Item instances")
   Item.objects.all().delete()
-
-
-# def create_address():
-#   """Creates an address object combining different elements from the list"""
-#   print("Creating address")
-#   street_flats = ["#221 B", "#101 A", "#550I", "#420G", "#A13"]
-#   street_localities = ["Bakers Street", "Rajori Gardens", "Park Street", "MG Road", "Indiranagar"]
-#   pincodes = ["101234", "101232", "101231", "101236", "101239"]
-
-#   address = Address(
-#     street_flat=random.choice(street_flats),
-#     street_locality=random.choice(street_localities),
-#     pincode=random.choice(pincodes),
-#   )
-#   address.save()
-#   print("{} address created.".format(address))
-#   return address
 
 def create_armors():
   print("Creating armors")
