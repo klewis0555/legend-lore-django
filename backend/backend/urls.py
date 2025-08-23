@@ -29,5 +29,5 @@ router.register(r'items', views.ItemView, 'item')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
-    path('api/generate_shop/', views.generate_shop, name='generate_shop')
+    path('shop/generate_shop/', views.ShopView.as_view(), name='generate_shop')
 ]

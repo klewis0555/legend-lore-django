@@ -1,12 +1,23 @@
+import random
 from rest_framework import serializers
 from .models import Armor, Weapon, Spell, Item
 
 class ArmorSerializer(serializers.ModelSerializer):
+  armor_category = serializers.CharField(source='get_category_display', read_only=True)
+  category = serializers.CharField(write_only=True)
+
   class Meta:
     model = Armor
-    fields = ('id', 'name', 'price', 'category')
+    fields = ('id', 'name', 'price', 'category', 'armor_category')
 
 class WeaponSerializer(serializers.ModelSerializer):
+  damage_type = serializers.CharField(write_only=True)
+  damage = serializers.CharField(source='get_damage_type_display', read_only=True)
+  weapon_class = serializers.CharField(write_only=True)
+  weapon_type = serializers.CharField(source='get_weapon_class_display', read_only=True)
+  mastery = serializers.CharField(write_only=True)
+  weapon_mastery = serializers.CharField(source='get_mastery_display', read_only=True)
+
   class Meta:
     model = Weapon
     fields = (
@@ -14,10 +25,13 @@ class WeaponSerializer(serializers.ModelSerializer):
       'name',
       'price',
       'damage_type',
+      'damage',
       'weapon_class',
+      'weapon_type',
       'martial',
       'ranged',
       'mastery',
+      'weapon_mastery',
       'ammunition',
       'finesse',
       'heavy',
@@ -30,11 +44,19 @@ class WeaponSerializer(serializers.ModelSerializer):
     )
 
 class SpellSerializer(serializers.ModelSerializer):
+  school_of_magic = serializers.CharField(source='get_school_display', read_only=True)
+  school = serializers.CharField(write_only=True)
+
   class Meta:
     model = Spell
-    fields = ('id', 'name', 'level', 'school')
+    fields = ('id', 'name', 'level', 'school', 'school_of_magic')
 
 class ItemSerializer(serializers.ModelSerializer):
+  item_category = serializers.CharField(source='get_category_display', read_only=True)
+  category = serializers.CharField(write_only=True)
+  item_rarity = serializers.CharField(source='get_rarity_display', read_only=True)
+  rarity = serializers.CharField(write_only=True)
+
   armor_options = serializers.SlugRelatedField(
     many=True,
     slug_field='name',
@@ -64,8 +86,42 @@ class ItemSerializer(serializers.ModelSerializer):
       'price',
       'attunement',
       'rarity',
+      'item_rarity',
       'category',
+      'item_category',
       'armor_options',
       'weapon_options',
       'spell_options'
     )
+
+class ShopItemSerializer(serializers.ModelSerializer):
+  item_name = serializers.SerializerMethodField()
+  category = serializers.SerializerMethodField()
+  random_price = serializers.SerializerMethodField()
+  
+  class Meta:
+    model = Item
+    fields = ['item_name', 'random_price', 'category']
+  
+  def to_representation(self, instance):
+    armors = instance.armor_options.all()
+    self._random_armor = random.choice(armors) if armors.exists() else None
+    return super().to_representation(instance)
+  
+  def get_item_name(self, obj):
+    return obj.name.replace('___', self._random_armor.name)
+
+  def get_category(self, obj):
+    return obj.get_category_display()
+  
+  def get_random_price(self, obj):
+    min_price = int(obj.price * 0.75)
+    max_price = int(obj.price * 1.25)
+    if hasattr(self, '_random_armor') and self._random_armor:
+      return random.randint(min_price, max_price) + self._random_armor.price
+    return random.randint(min_price, max_price)
+  
+  def get_random_armor_name(self, obj):
+    if hasattr(self, '_random_armor') and self._random_armor:
+      return self._random_armor.name
+    return None
