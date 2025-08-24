@@ -104,12 +104,19 @@ class ShopItemSerializer(serializers.ModelSerializer):
     fields = ['item_name', 'random_price', 'category']
   
   def to_representation(self, instance):
-    armors = instance.armor_options.all()
-    self._random_armor = random.choice(armors) if armors.exists() else None
+    options = None
+    if instance.armor_options.exists():
+      options = instance.armor_options.all()
+    elif instance.weapon_options.exists():
+      options = instance.weapon_options.all()
+    elif instance.spell_options.exists():
+      options = instance.spell_options.all()
+    
+    self._random_option = random.choice(options) if options is not None else None
     return super().to_representation(instance)
   
   def get_item_name(self, obj):
-    return obj.name.replace('___', self._random_armor.name)
+    return obj.name.replace('___', self._random_option.name) if self._random_option else obj.name
 
   def get_category(self, obj):
     return obj.get_category_display()
@@ -117,11 +124,6 @@ class ShopItemSerializer(serializers.ModelSerializer):
   def get_random_price(self, obj):
     min_price = int(obj.price * 0.75)
     max_price = int(obj.price * 1.25)
-    if hasattr(self, '_random_armor') and self._random_armor:
-      return random.randint(min_price, max_price) + self._random_armor.price
+    if hasattr(self, '_random_option') and self._random_option and hasattr(self._random_option, 'price'):
+      return random.randint(min_price, max_price) + self._random_option.price
     return random.randint(min_price, max_price)
-  
-  def get_random_armor_name(self, obj):
-    if hasattr(self, '_random_armor') and self._random_armor:
-      return self._random_armor.name
-    return None
