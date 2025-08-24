@@ -1913,7 +1913,7 @@ ITEMS = [
     "spell_query": None,
   },
   {
-    "name": "Mind Carapace __",
+    "name": "Mind Carapace ___",
     "price": "500",
     "attunement": True,
     "rarity": "U",
@@ -2983,7 +2983,7 @@ ITEMS = [
     "spell_query": None,
   },
   {
-    "name": "Battering __",
+    "name": "Battering ___",
     "price": "800",
     "attunement": True,
     "rarity": "R",
