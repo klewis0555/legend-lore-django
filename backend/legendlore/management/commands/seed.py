@@ -39,12 +39,12 @@ def clear_data():
   Item.objects.all().delete()
 
 def create_armors():
-  print("Creating armors")
+  print("Creating Armors")
   for armor in ARMOR:
     Armor.objects.create(name=armor['name'], price=armor['price'], category=armor['category'])
 
 def create_weapons():
-  print("Creating weapons")
+  print("Creating Weapons")
   for weapon in WEAPONS:
     Weapon.objects.create(
       name=weapon['name'],
@@ -66,7 +66,7 @@ def create_weapons():
     )
 
 def create_spells():
-  print("Creating spells")
+  print("Creating Spells")
   for spell in SPELLS:
     Spell.objects.create(name=spell['name'], level=spell['level'], school=spell['school'])
 
