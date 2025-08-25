@@ -87,7 +87,7 @@ def create_items():
     
 
 
-def run_seed(self, mode=MODE_SEED):
+def run_seed(self, mode: str=MODE_SEED):
   """ Seed database based on mode
 
   :param mode: refresh / clear / seed (default)

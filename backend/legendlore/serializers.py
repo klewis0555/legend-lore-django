@@ -98,12 +98,13 @@ class ShopItemSerializer(serializers.ModelSerializer):
   item_name = serializers.SerializerMethodField()
   category = serializers.SerializerMethodField()
   random_price = serializers.SerializerMethodField()
+  quantity = serializers.SerializerMethodField()
   
   class Meta:
     model = Item
-    fields = ['item_name', 'random_price', 'category']
+    fields = ['item_name', 'random_price', 'category', 'attunement', 'quantity']
   
-  def to_representation(self, instance):
+  def to_representation(self, instance: Item):
     options = None
     if instance.armor_options.exists():
       options = instance.armor_options.all()
@@ -115,15 +116,24 @@ class ShopItemSerializer(serializers.ModelSerializer):
     self._random_option = random.choice(options) if options is not None else None
     return super().to_representation(instance)
   
-  def get_item_name(self, obj):
+  def get_item_name(self, obj: Item):
     return obj.name.replace('___', self._random_option.name) if self._random_option else obj.name
 
-  def get_category(self, obj):
+  def get_category(self, obj: Item):
     return obj.get_category_display()
   
-  def get_random_price(self, obj):
+  def get_random_price(self, obj: Item):
     min_price = int(obj.price * 0.75)
     max_price = int(obj.price * 1.25)
-    if hasattr(self, '_random_option') and self._random_option and hasattr(self._random_option, 'price'):
-      return random.randint(min_price, max_price) + self._random_option.price
-    return random.randint(min_price, max_price)
+    random_price = random.randint(min_price, max_price)
+    if self._random_option and hasattr(self._random_option, 'price'):
+      random_price += self._random_option.price # if the item has an armor or weapon option, add its price
+      if type(self._random_option) == Weapon and self._random_option.ranged:
+        random_price *= 1.25 # if the weapon is ranged, increase price by 25%
+        if self._random_option.weapon_class == "FRM":
+          random_price *= 1.5 # if the weapon is a firearm, increase price by 50%
+    
+    return int(random_price)
+  
+  def get_quantity(self, obj: Item):
+    return random.randint(1, 5) if obj.category in ["CON", "AMM"] else 1

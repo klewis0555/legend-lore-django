@@ -239,3 +239,10 @@ class Item(models.Model):
   
   def __repr__(self):
     return f"{self.name}"
+  
+  def __lt__(self, other):
+    return self.name < other.name
+  
+  def has_options(self):
+    return self.armor_options.exists() or self.weapon_options.exists() or self.spell_options.exists()
+
