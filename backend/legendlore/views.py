@@ -1,12 +1,13 @@
 from django.shortcuts import render
 from itertools import chain
-from random import random, randint, choices
+from random import random, randint, choice, choices
 from rest_framework import viewsets
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import ArmorSerializer, WeaponSerializer, SpellSerializer, ItemSerializer, ShopItemSerializer
 from .models import Armor, Weapon, Spell, Item
+from .references import NOUNS, ADJECTIVES
 
 
 class ArmorView(viewsets.ModelViewSet):
@@ -135,3 +136,7 @@ def generate_random_shop(shop_size: str, shop_type: str):
     shop_items.extend(choices(legendary_items, k=legendary_count))
 
   return sorted(shop_items)
+
+@api_view(['GET'])
+def shop_name_view(request):
+  return Response(f"The {choice(ADJECTIVES)} {choice(NOUNS)}")
