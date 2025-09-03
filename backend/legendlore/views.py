@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from .serializers import ArmorSerializer, WeaponSerializer, SpellSerializer, ItemSerializer, ShopItemSerializer
 from .models import Armor, Weapon, Spell, Item
-from .references import NOUNS, ADJECTIVES
+from .references import ANIMALS, ADJECTIVES, NATURE, OBJECTS
 
 
 class ArmorView(viewsets.ModelViewSet):
@@ -139,4 +139,4 @@ def generate_random_shop(shop_size: str, shop_type: str):
 
 @api_view(['GET'])
 def shop_name_view(request):
-  return Response(f"The {choice(ADJECTIVES)} {choice(NOUNS)}")
+  return Response(f"The {choice(ADJECTIVES)} {choice(ANIMALS + NATURE + OBJECTS)}")
