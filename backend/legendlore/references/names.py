@@ -212,5 +212,6 @@ NATURE = [
   "Star",
   "Stream",
   "Tree",
+  "Vine",
   "Willow",
 ]
