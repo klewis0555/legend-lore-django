@@ -5,4 +5,46 @@
 db.sqlite3
 
 # FrontEnd
-ll-frontend/node_modules
+legendlore-frontend/node_modules
+
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+legendlore-frontend/node_modules
+legendlore-frontend/.pnp
+legendlore-frontend/.pnp.*
+legendlore-frontend/.yarn/*
+legendlore-frontend/!.yarn/patches
+legendlore-frontend/!.yarn/plugins
+legendlore-frontend/!.yarn/releases
+legendlore-frontend/!.yarn/versions
+
+# testing
+legendlore-frontend/coverage
+
+# next.js
+legendlore-frontend/.next/
+legendlore-frontend/out/
+
+# production
+legendlore-frontend/build
+
+# misc
+legendlore-frontend/.DS_Store
+legendlore-frontend/*.pem
+
+# debug
+legendlore-frontend/npm-debug.log*
+legendlore-frontend/yarn-debug.log*
+legendlore-frontend/yarn-error.log*
+legendlore-frontend/.pnpm-debug.log*
+
+# env files (can opt-in for committing if needed)
+legendlore-frontend/.env*
+
+# vercel
+legendlore-frontend/.vercel
+
+# typescript
+legendlore-frontend/*.tsbuildinfo
+legendlore-frontend/next-env.d.ts
